@@ -30,6 +30,7 @@
 
 # Misc files
 *.log
+*.trs
 .DS_Store
 
 # http://www.gnu.org/software/automake
@@ -63,3 +64,6 @@ m4/lt~obsolete.m4
 
 # pkg-config file
 libzbox.pc
+
+# test executables
+test/test_ffi

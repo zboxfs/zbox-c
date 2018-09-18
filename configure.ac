@@ -72,6 +72,7 @@ AC_CONFIG_FILES([ \
   libzbox.pc \
   src/include/Makefile \
   src/include/zbox/version.h \
+  test/Makefile
 ])
 
 AC_OUTPUT

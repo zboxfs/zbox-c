@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = src/include .
+SUBDIRS = src/include . test
 EXTRA_DIST = .gitignore autogen.sh
 
 ZBOX_LIB = $(PACKAGE_NAME)
@@ -14,7 +14,12 @@ pkgconfig_DATA = @PACKAGE_NAME@.pc
 DISTCLEANFILES = $(pkgconfig_DATA)
 
 rust:
-	cargo build --release
+	cd zbox && cargo build --release
+
+test:
+	cd test && $(MAKE) check
+
+check: test
 
 clear-lib:
 	rm -f $(DESTDIR)$(libdir)/$(ZBOX_LIB)*
@@ -42,7 +47,7 @@ install-exec-local: clear-lib
 	esac;
 
 clean-local:
-	cargo clean
+	cd zbox && cargo clean
 
 uninstall-local: clear-lib
 	rm -rf $(DESTDIR)$(includedir)/zbox
