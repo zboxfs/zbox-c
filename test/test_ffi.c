@@ -42,12 +42,17 @@ int test_repo() {
     assert(info.version_limit == 2);
     assert(info.dedup_chunk);
     assert(!info.is_read_only);
-    assert(info.created > 0);
+    assert(info.created_at > 0);
     zbox_destroy_repo_info(&info);
 
     // reset password
     ret = zbox_repo_reset_password(repo, pwd, "new pwd",
         ZBOX_OPS_INTERACTIVE, ZBOX_MEM_MODERATE);
+    assert(ret == 0);
+
+    // repair super block, not usable for memory-based storage
+    ret = zbox_repo_repair_super_block(uri, "new pwd");
+    assert(ret < 0);
 
     // path exists
     result = zbox_repo_path_exists(repo, "/");
@@ -97,7 +102,7 @@ int test_repo() {
     struct zbox_metadata meta;
     ret = zbox_repo_metadata(&meta, repo, "/dir");
     assert(!ret);
-    assert(meta.ftype == ZBOX_FTYPE_DIR);
+    assert(meta.file_type == ZBOX_FTYPE_DIR);
 
     // history
     struct zbox_version_list vlist;
@@ -105,7 +110,7 @@ int test_repo() {
     assert(!ret);
     assert(vlist.len == 1);
     assert(vlist.versions[0].num == 1);
-    assert(vlist.versions[0].len == 0);
+    assert(vlist.versions[0].content_len == 0);
     zbox_destroy_version_list(&vlist);
 
     // copy
@@ -158,8 +163,8 @@ int test_file() {
     struct zbox_metadata meta;
     ret = zbox_file_metadata(&meta, file);
     assert(!ret);
-    assert(meta.ftype == ZBOX_FTYPE_FILE);
-    assert(meta.len == 0);
+    assert(meta.file_type == ZBOX_FTYPE_FILE);
+    assert(meta.content_len == 0);
 
     // history
     struct zbox_version_list vlist;
@@ -167,7 +172,7 @@ int test_file() {
     assert(!ret);
     assert(vlist.len == 1);
     assert(vlist.versions[0].num == 1);
-    assert(vlist.versions[0].len == 0);
+    assert(vlist.versions[0].content_len == 0);
     zbox_destroy_version_list(&vlist);
 
     // current version
@@ -228,7 +233,7 @@ int test_file() {
     assert(!ret);
     ret = zbox_file_metadata(&meta, file);
     assert(!ret);
-    assert(meta.len == 2);
+    assert(meta.content_len == 2);
 
     zbox_close_file(file);
     zbox_close_repo(repo);

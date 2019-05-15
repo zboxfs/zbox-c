@@ -5,7 +5,7 @@ EXTRA_DIST = .gitignore autogen.sh
 
 ZBOX_LIB = $(PACKAGE_NAME)
 ZBOX_VER_LIB = $(PACKAGE_NAME)-$(PACKAGE_VERSION)
-ZBOX_SRC_LIB = target/release/$(ZBOX_LIB)
+ZBOX_SRC_LIB = zbox/target/release/$(ZBOX_LIB)
 ZBOX_TGT_LIB = $(DESTDIR)$(libdir)/$(ZBOX_VER_LIB)
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -14,7 +14,7 @@ pkgconfig_DATA = @PACKAGE_NAME@.pc
 DISTCLEANFILES = $(pkgconfig_DATA)
 
 rust:
-	cd zbox && cargo build --release
+	cd zbox && cargo build --features "ffi storage-file" --release
 
 test:
 	cd test && $(MAKE) check

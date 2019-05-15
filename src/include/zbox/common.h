@@ -36,11 +36,11 @@ enum zbox_file_type {
 };
 
 struct zbox_metadata {
-    enum zbox_file_type ftype;
-    size_t len;
+    enum zbox_file_type file_type;
+    size_t content_len;
     size_t curr_version;
-    time_t created;
-    time_t modified;
+    time_t created_at;
+    time_t modified_at;
 };
 
 struct zbox_dir_entry {
@@ -57,8 +57,8 @@ struct zbox_dir_entry_list {
 
 struct zbox_version {
     size_t num;
-    size_t len;
-    time_t created;
+    size_t content_len;
+    time_t created_at;
 };
 
 struct zbox_version_list {

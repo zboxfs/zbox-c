@@ -22,7 +22,7 @@ struct zbox_repo_info {
     uint8_t version_limit;
     bool dedup_chunk;
     bool is_read_only;
-    time_t created;
+    time_t created_at;
 };
 
 typedef void *zbox_opener;
@@ -58,6 +58,8 @@ extern int zbox_repo_reset_password(zbox_repo repo,
                                     const char *new_pwd,
                                     enum zbox_ops_limit ops_limit,
                                     enum zbox_mem_limit mem_limit);
+extern int zbox_repo_repair_super_block(const char *uri,
+                                        const char *pwd);
 extern bool zbox_repo_path_exists(zbox_repo repo, const char *path);
 extern bool zbox_repo_is_file(zbox_repo repo, const char *path);
 extern bool zbox_repo_is_dir(zbox_repo repo, const char *path);
