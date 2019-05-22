@@ -1,6 +1,7 @@
 ZBOX_EXPORT = \
 	zbox.h \
 	zbox/common.h \
+	zbox/error.h \
 	zbox/file.h \
 	zbox/repo.h
 
