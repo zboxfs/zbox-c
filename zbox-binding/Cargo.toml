@@ -1,0 +1,11 @@
+[package]
+name = "zbox-binding"
+version = "0.1.0"
+authors = ["Bo Lu"]
+
+[lib]
+name = "zbox"
+crate-type = ["cdylib", "staticlib"]
+
+[dependencies]
+zbox = { version = "0.8.0", features = ["storage-file"] }

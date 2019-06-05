@@ -1,3 +1,0 @@
-[submodule "zbox"]
-	path = zbox
-	url = git@github.com:zboxfs/zbox.git

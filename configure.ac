@@ -3,8 +3,8 @@ dnl Process this file with autoconf to produce a configure script.
 
 dnl Semantic Versioning, http://semver.org
 m4_define([zbox_version_major], [0])
-m4_define([zbox_version_minor], [7])
-m4_define([zbox_version_patch], [1])
+m4_define([zbox_version_minor], [8])
+m4_define([zbox_version_patch], [0])
 
 AC_PREREQ([2.69])
 AC_INIT([libzbox],
