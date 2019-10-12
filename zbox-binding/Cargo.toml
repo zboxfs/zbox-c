@@ -8,4 +8,4 @@ name = "zbox"
 crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
-zbox = { version = "0.8.6", features = ["storage-file"] }
+zbox = { version = "0.8.7", features = ["storage-file"] }

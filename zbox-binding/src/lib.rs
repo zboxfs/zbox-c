@@ -135,6 +135,16 @@ pub extern "C" fn zbox_opener_read_only(
 }
 
 #[no_mangle]
+pub extern "C" fn zbox_opener_force(
+    opener: *mut RepoOpener,
+    force: boolean_t,
+) {
+    unsafe {
+        (*opener).force(force == 1);
+    }
+}
+
+#[no_mangle]
 pub extern "C" fn zbox_free_opener(opener: *mut RepoOpener) {
     let _owned = unsafe { Box::from_raw(opener) };
     // _owned droped here
