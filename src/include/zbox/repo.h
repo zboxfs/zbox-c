@@ -47,6 +47,7 @@ extern int zbox_open_repo(zbox_repo *repo,
                           const char *uri,
                           const char *pwd);
 extern void zbox_close_repo(zbox_repo repo);
+extern int zbox_destroy_repo(const char *uri);
 
 extern int zbox_repo_exists(bool *out, const char *uri);
 
@@ -101,6 +102,7 @@ extern int zbox_destroy_version_list(struct zbox_version_list *version_list);
 
 // copy
 extern int zbox_repo_copy(const char *to, const char *from, zbox_repo repo);
+extern int zbox_repo_copy_dir_all(const char *to, const char *from, zbox_repo repo);
 
 // remove file and dir
 extern int zbox_repo_remove_file(const char *path, zbox_repo repo);

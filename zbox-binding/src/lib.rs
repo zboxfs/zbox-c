@@ -177,6 +177,17 @@ pub extern "C" fn zbox_close_repo(repo: *mut Repo) {
 }
 
 #[no_mangle]
+pub extern "C" fn zbox_destroy_repo(uri: *const c_char) -> c_int {
+    unsafe {
+        let uri_str = CStr::from_ptr(uri).to_str().unwrap();
+        match Repo::destroy(uri_str) {
+            Ok(_) => 0,
+            Err(err) => err.into(),
+        }
+    }
+}
+
+#[no_mangle]
 pub extern "C" fn zbox_repo_exists(
     out: *mut boolean_t,
     uri: *const c_char,
@@ -589,6 +600,22 @@ pub extern "C" fn zbox_repo_copy(
 }
 
 #[no_mangle]
+pub extern "C" fn zbox_repo_copy_dir_all(
+    to: *const c_char,
+    from: *const c_char,
+    repo: *mut Repo,
+) -> c_int {
+    unsafe {
+        let to = CStr::from_ptr(to).to_str().unwrap();
+        let from = CStr::from_ptr(from).to_str().unwrap();
+        match (*repo).copy_dir_all(from, to) {
+            Ok(_) => 0,
+            Err(err) => err.into(),
+        }
+    }
+}
+
+#[no_mangle]
 pub extern "C" fn zbox_repo_remove_file(
     path: *const c_char,
     repo: *mut Repo,
@@ -818,7 +845,25 @@ pub extern "C" fn zbox_file_version_reader(
 }
 
 #[no_mangle]
-pub extern "C" fn zbox_file_version_read(
+pub extern "C" fn zbox_file_version_reader_version(
+    dst: *mut CVersion,
+    reader: *mut VersionReader,
+) -> c_int {
+    unsafe {
+        match (*reader).version() {
+            Ok(ver) => {
+                (*dst).num = ver.num();
+                (*dst).content_len = ver.content_len();
+                (*dst).created_at = to_time_t(ver.created_at());
+                0
+            }
+            Err(err) => Error::from(err).into(),
+        }
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn zbox_file_version_reader_read(
     dst: *mut uint8_t,
     len: size_t,
     reader: *mut VersionReader,

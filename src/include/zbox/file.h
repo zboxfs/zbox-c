@@ -43,8 +43,12 @@ extern int zbox_file_read(uint8_t *dst, size_t len, zbox_file file);
 extern int zbox_file_version_reader(zbox_version_reader *reader,
                                     size_t ver_num,
                                     zbox_file file);
-extern int zbox_file_version_read(uint8_t *dst, size_t len, zbox_file file);
-extern int zbox_file_version_reader_seek(zbox_file file,
+extern int zbox_file_version_reader_version(struct zbox_version *dst,
+                                            zbox_version_reader reader);
+extern int zbox_file_version_reader_read(uint8_t *dst,
+                                         size_t len,
+                                         zbox_version_reader reader);
+extern int zbox_file_version_reader_seek(zbox_version_reader reader,
                                          int64_t offset,
                                          int whence);
 extern void zbox_close_version_reader(zbox_version_reader *reader);
