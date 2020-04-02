@@ -40,7 +40,8 @@ int test_repo() {
     assert(info.cipher == ZBOX_CIPHER_XCHACHA);
     assert(!info.compress);
     assert(info.version_limit == 2);
-    assert(info.dedup_chunk);
+    assert(!info.dedup_chunk);
+    assert(!info.dedup_file);
     assert(!info.is_read_only);
     assert(info.created_at > 0);
     zbox_destroy_repo_info(&info);
@@ -50,9 +51,9 @@ int test_repo() {
         ZBOX_OPS_INTERACTIVE, ZBOX_MEM_MODERATE);
     assert(ret == 0);
 
-    // repair super block, not usable for memory-based storage
+    // repair super block
     ret = zbox_repo_repair_super_block(uri, "new pwd");
-    assert(ret < 0);
+    assert(ret == 0);
 
     // path exists
     result = zbox_repo_path_exists(repo, "/");
@@ -147,6 +148,7 @@ int test_file() {
     // opener
     zbox_opener opener = zbox_create_opener();
     zbox_opener_create(opener, true);
+    zbox_opener_version_limit(opener, 5);
 
     // open repo
     zbox_repo repo;
@@ -216,14 +218,14 @@ int test_file() {
     zbox_version_reader rdr;
     ret = zbox_file_version_reader(&rdr, 3, file);
     assert(!ret);
-    ret = zbox_file_version_read(dst, 3, rdr);
+    ret = zbox_file_version_reader_read(dst, 3, rdr);
     assert(ret == 3);
     assert(!memcmp(dst, buf, 3));
 
     // version reader seek
     ret = zbox_file_version_reader_seek(rdr, 1, SEEK_SET);
     assert(!ret);
-    ret = zbox_file_version_read(dst, 2, rdr);
+    ret = zbox_file_version_reader_read(dst, 2, rdr);
     assert(ret == 2);
     assert(!memcmp(dst, &buf[1], 2));
     zbox_close_version_reader(rdr);

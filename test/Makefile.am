@@ -1,7 +1,7 @@
 AM_CFLAGS = -I$(top_builddir)/src/include
 
 LDADD = \
-	$(top_builddir)/zbox/target/release/libzbox.a \
+	$(top_builddir)/zbox-binding/target/release/libzbox.a \
 	-lsodium
 
 TESTS_TARGETS = \

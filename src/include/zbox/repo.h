@@ -21,6 +21,7 @@ struct zbox_repo_info {
     bool compress;
     uint8_t version_limit;
     bool dedup_chunk;
+    bool dedup_file;
     bool is_read_only;
     time_t created_at;
 };
@@ -37,6 +38,7 @@ extern void zbox_opener_create_new(zbox_opener opener, bool create_new);
 extern void zbox_opener_compress(zbox_opener opener, bool compress);
 extern void zbox_opener_version_limit(zbox_opener opener, uint8_t limit);
 extern void zbox_opener_dedup_chunk(zbox_opener opener, bool dedup_chunk);
+extern void zbox_opener_dedup_file(zbox_opener opener, bool dedup_file);
 extern void zbox_opener_read_only(zbox_opener opener, bool read_only);
 extern void zbox_opener_force(zbox_opener opener, bool force);
 extern void zbox_free_opener(zbox_opener opener);

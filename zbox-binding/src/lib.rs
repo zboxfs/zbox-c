@@ -125,6 +125,16 @@ pub extern "C" fn zbox_opener_dedup_chunk(
 }
 
 #[no_mangle]
+pub extern "C" fn zbox_opener_dedup_file(
+    opener: *mut RepoOpener,
+    dedup_file: boolean_t,
+) {
+    unsafe {
+        (*opener).dedup_file(dedup_file == 1);
+    }
+}
+
+#[no_mangle]
 pub extern "C" fn zbox_opener_read_only(
     opener: *mut RepoOpener,
     read_only: boolean_t,
@@ -135,10 +145,7 @@ pub extern "C" fn zbox_opener_read_only(
 }
 
 #[no_mangle]
-pub extern "C" fn zbox_opener_force(
-    opener: *mut RepoOpener,
-    force: boolean_t,
-) {
+pub extern "C" fn zbox_opener_force(opener: *mut RepoOpener, force: boolean_t) {
     unsafe {
         (*opener).force(force == 1);
     }
@@ -215,6 +222,7 @@ pub struct CRepoInfo {
     compress: boolean_t,
     version_limit: uint8_t,
     dedup_chunk: boolean_t,
+    dedup_file: boolean_t,
     is_read_only: boolean_t,
     created_at: time_t,
 }
@@ -244,6 +252,7 @@ pub extern "C" fn zbox_get_repo_info(
     info.compress = repo_info.compress() as boolean_t;
     info.version_limit = repo_info.version_limit();
     info.dedup_chunk = repo_info.dedup_chunk() as boolean_t;
+    info.dedup_file = repo_info.dedup_file() as boolean_t;
     info.is_read_only = repo_info.is_read_only() as boolean_t;
     info.created_at = to_time_t(ctime);
 
